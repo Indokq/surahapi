@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:surahapi/http_service.dart';
 import 'package:surahapi/surahayah_model.dart';
+import 'package:html/parser.dart' as html_parser;
 
 class SurahPage extends StatelessWidget {
   final HttpService httpService = HttpService();
@@ -99,6 +100,11 @@ class SurahDetailsPage extends StatelessWidget {
   final HttpService httpService = HttpService();
 
   SurahDetailsPage({super.key, required this.surah});
+
+  String _removeHtmlTags(String htmlString ) {
+    var document = html_parser.parse(htmlString);
+    return document.body?.text ?? "";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -346,7 +352,7 @@ class SurahDetailsPage extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
-                                  ayat.tr,
+                                  _removeHtmlTags(ayat.tr),
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.grey.shade700,
